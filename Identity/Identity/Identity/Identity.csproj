@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>aspnet-Identity-2C0AD936-8CCF-4CC7-8891-7441BAC743B7</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20211028112236_Other_models.cs" />
+    <Compile Remove="Migrations\20211028112236_Other_models.Designer.cs" />
+    <Compile Remove="Migrations\20211028113945_2.cs" />
+    <Compile Remove="Migrations\20211028113945_2.Designer.cs" />
+    <Compile Remove="Migrations\20211104081033_CustomerFix.cs" />
+    <Compile Remove="Migrations\20211104081033_CustomerFix.Designer.cs" />
+    <Compile Remove="Migrations\20211104081455_CustomerFix.cs" />
+    <Compile Remove="Migrations\20211104081455_CustomerFix.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.20" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.20" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.20" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.20" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.20" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.20" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Identity\Controllers\" />
+  </ItemGroup>
+
+</Project>
