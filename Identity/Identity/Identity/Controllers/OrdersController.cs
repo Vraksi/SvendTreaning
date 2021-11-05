@@ -37,20 +37,34 @@ namespace Identity.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrder(int id)
         {
+
+            var os = _context.Accessories.FindAsync(2);
+
+            //TODO: skal testes
             var order = await _context.Orders
+                //.Where(s => s.CustomerId == id)
                 .Include(s => s.Status)
                 .Include(s => s.OrderLines)
                 .ThenInclude(s => s.Product)
                 .Where(s => s.CustomerId == id)
                 .ToListAsync();
-            
-
-            foreach (var word in os)
+            /*
+            foreach(var temp in order)
             {
-                Console.WriteLine(word);
-                //var temp = _context.FindAsync(temp);
-                //Accessory.Add();
+                var orderLines = temp.OrderLines;
+                foreach(var temp1 in orderLines)
+                {
+                    var products = temp1.Product.AccessoriesAdded;
+                    string[] number = products.Split(',');
+                    foreach (var temp2 in number)
+                    {
+                        int number1 = Convert.ToInt32(temp2);
+                        var temp3 = await _context.Accessories.FindAsync(number1);
+                        Console.WriteLine(temp3);
+                    }
+                }
             }
+            */
 
             if (order == null)
             {
