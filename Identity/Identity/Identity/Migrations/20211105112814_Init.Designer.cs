@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Identity.Migrations
 {
     [DbContext(typeof(WebshopContext))]
-    [Migration("20211104083238_OrderCustomerId")]
-    partial class OrderCustomerId
+    [Migration("20211105112814_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,9 +55,6 @@ namespace Identity.Migrations
                     b.Property<string>("LoginId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OrderId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
@@ -95,9 +92,6 @@ namespace Identity.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Accessories")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
@@ -107,14 +101,14 @@ namespace Identity.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductAccessoryId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductAccessoryId");
 
                     b.ToTable("OrderLines");
                 });
@@ -125,9 +119,6 @@ namespace Identity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AccessoriesAdded")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -141,6 +132,31 @@ namespace Identity.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Identity.Models.ProductAccessory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AccessoriesAdded")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AccessoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccessoryId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductAccessory");
                 });
 
             modelBuilder.Entity("Identity.Models.Status", b =>
@@ -181,7 +197,20 @@ namespace Identity.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Identity.Models.Product", "Product")
+                    b.HasOne("Identity.Models.ProductAccessory", "ProductAccessory")
+                        .WithMany()
+                        .HasForeignKey("ProductAccessoryId");
+                });
+
+            modelBuilder.Entity("Identity.Models.ProductAccessory", b =>
+                {
+                    b.HasOne("Identity.Models.Accessory", "Editions")
+                        .WithMany()
+                        .HasForeignKey("AccessoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Identity.Models.Product", "Products")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)

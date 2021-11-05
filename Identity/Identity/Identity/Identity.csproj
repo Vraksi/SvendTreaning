@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20211028074533_init.cs" />
+    <Compile Remove="Migrations\20211028074533_init.Designer.cs" />
     <Compile Remove="Migrations\20211028112236_Other_models.cs" />
     <Compile Remove="Migrations\20211028112236_Other_models.Designer.cs" />
     <Compile Remove="Migrations\20211028113945_2.cs" />
@@ -14,6 +16,18 @@
     <Compile Remove="Migrations\20211104081033_CustomerFix.Designer.cs" />
     <Compile Remove="Migrations\20211104081455_CustomerFix.cs" />
     <Compile Remove="Migrations\20211104081455_CustomerFix.Designer.cs" />
+    <Compile Remove="Migrations\20211104081542_CustomerFix.cs" />
+    <Compile Remove="Migrations\20211104081542_CustomerFix.Designer.cs" />
+    <Compile Remove="Migrations\20211104083238_OrderCustomerId.cs" />
+    <Compile Remove="Migrations\20211104083238_OrderCustomerId.Designer.cs" />
+    <Compile Remove="Migrations\20211105110603_many-to-many_Product-Accessory.cs" />
+    <Compile Remove="Migrations\20211105110603_many-to-many_Product-Accessory.Designer.cs" />
+    <Compile Remove="Migrations\20211105111525_More-stuff.cs" />
+    <Compile Remove="Migrations\20211105111525_More-stuff.Designer.cs" />
+    <Compile Remove="Migrations\20211105111829_Init.cs" />
+    <Compile Remove="Migrations\20211105111829_Init.Designer.cs" />
+    <Compile Remove="Migrations\20211105112632_Init2.cs" />
+    <Compile Remove="Migrations\20211105112632_Init2.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

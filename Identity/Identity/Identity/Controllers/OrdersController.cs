@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Identity.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrdersController : ControllerBase
@@ -30,41 +30,47 @@ namespace Identity.Controllers
             return await _context.Orders
                 .Include(s => s.Status)
                 .Include(s => s.OrderLines)
-                .ThenInclude(s => s.Product).ToListAsync();
+                .ToListAsync();
         }
 
         // GET: api/Orders/5
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrder(int id)
         {
+            List<OrderLine> orderline = new List<OrderLine>();
+            List<Accessory> listacces = new List<Accessory>();
+            string stringarray;
 
-            var os = _context.Accessories.FindAsync(2);
-
-            //TODO: skal testes
-            var order = await _context.Orders
+            List<Order> order = await _context.Orders
                 //.Where(s => s.CustomerId == id)
                 .Include(s => s.Status)
-                .Include(s => s.OrderLines)
-                .ThenInclude(s => s.Product)
+                .Include(s => s.OrderLines)                
                 .Where(s => s.CustomerId == id)
                 .ToListAsync();
-            /*
-            foreach(var temp in order)
+
+            var temp = order.Select(c => c.OrderLines);
+
+            foreach (var os in temp)
             {
-                var orderLines = temp.OrderLines;
-                foreach(var temp1 in orderLines)
-                {
-                    var products = temp1.Product.AccessoriesAdded;
-                    string[] number = products.Split(',');
-                    foreach (var temp2 in number)
-                    {
-                        int number1 = Convert.ToInt32(temp2);
-                        var temp3 = await _context.Accessories.FindAsync(number1);
-                        Console.WriteLine(temp3);
-                    }
-                }
+                os.Select(s => stringarray = s.AccessoriesAdded);
+                Console.WriteLine(os.Select(s => stringarray = s.AccessoriesAdded));
+            }
+            
+            /*
+            string s = "1,2,3,2,2,4";
+            string[] os = s.Split(',');
+            foreach (var temp in os)
+            {
+                int number = Convert.ToInt32(temp);
+                Accessory aess = await _context.Accessories.FindAsync(number);
+                listacces.Add(aess);
+                Console.WriteLine(aess.Name);
             }
             */
+            
+            //TODO: skal testes
+            
+            
 
             if (order == null)
             {

@@ -13,10 +13,6 @@ namespace Identity.Models
         public string Name { get; set; }
         public double Price { get; set; }
         public string Description { get; set; }
-        // TODO: Skal laves om sådan den kan være null
-        public string AccessoriesAdded { get; set; }
-        public List<Accessory> Accessories { get; set; }
-
-        
+        // TODO: Skal laves om sådan den kan være null        
     }
 }

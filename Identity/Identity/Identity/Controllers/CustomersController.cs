@@ -24,13 +24,25 @@ namespace Identity.Controllers
         // GET: api/Customers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
-        {         
-            var GetAll = await _context.Customers
+        {
+
+            List<Accessory> listacces = new List<Accessory>();
+            string s = "1,2,3,2,2,4";
+            string[] os = s.Split(',');
+            foreach( var temp in os )
+            {
+                int number = Convert.ToInt32(temp);
+                Accessory aess = await _context.Accessories.FindAsync(number);
+                listacces.Add(aess);
+                Console.WriteLine(aess.Name);
+            }
+
+
+            List<Customer> GetAll = await _context.Customers
                 .Include(s => s.Orders)
                 .ThenInclude(s => s.Status)
                 .Include(s => s.Orders)
                 .ThenInclude(s => s.OrderLines)
-                .ThenInclude(s => s.Product)
                 .ToListAsync();            
             return GetAll;
         }
