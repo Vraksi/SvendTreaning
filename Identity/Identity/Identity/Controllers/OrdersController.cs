@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Identity.Data;
 using Identity.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Linq.Expressions;
 
 namespace Identity.Controllers
 {
@@ -33,44 +34,22 @@ namespace Identity.Controllers
                 .ToListAsync();
         }
 
+
+
         // GET: api/Orders/5
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrder(int id)
         {
-            List<OrderLine> orderline = new List<OrderLine>();
-            List<Accessory> listacces = new List<Accessory>();
-            string stringarray;
-
             List<Order> order = await _context.Orders
                 //.Where(s => s.CustomerId == id)
                 .Include(s => s.Status)
-                .Include(s => s.OrderLines)                
+                .Include(s => s.OrderLines)
+                .ThenInclude(s => s.Product)
                 .Where(s => s.CustomerId == id)
                 .ToListAsync();
 
-            var temp = order.Select(c => c.OrderLines);
+           
 
-            foreach (var os in temp)
-            {
-                os.Select(s => stringarray = s.AccessoriesAdded);
-                Console.WriteLine(os.Select(s => stringarray = s.AccessoriesAdded));
-            }
-            
-            /*
-            string s = "1,2,3,2,2,4";
-            string[] os = s.Split(',');
-            foreach (var temp in os)
-            {
-                int number = Convert.ToInt32(temp);
-                Accessory aess = await _context.Accessories.FindAsync(number);
-                listacces.Add(aess);
-                Console.WriteLine(aess.Name);
-            }
-            */
-            
-            //TODO: skal testes
-            
-            
 
             if (order == null)
             {
