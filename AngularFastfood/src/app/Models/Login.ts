@@ -8,7 +8,7 @@ export interface Login {
 
 export class ClassLogin{
     id: number;
-    email: string;
+    emails: string;
     password: string;
     confirmPassword: string;
     rememberMe: boolean;
