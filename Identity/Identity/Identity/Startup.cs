@@ -44,12 +44,22 @@ namespace Identity
                 options.AddPolicy(name: test,
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                                      builder.WithOrigins("http://localhost:4200")
+                                        .AllowAnyHeader()
+                                        .AllowCredentials();
                                   });
+            });
+            services.AddDataProtection();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequiredAuthenticatedUser", policy => {
+                    policy.RequireAuthenticatedUser();
+                });
+                //options.AddPolicy("A", policy => policy.AddAuthenticationSchemes("Admin"));
             });
             services.ConfigureApplicationCookie(options =>
             {
-                options.Cookie.SameSite = SameSiteMode.Strict;
+                options.Cookie.SameSite = SameSiteMode.None;
             });
             services.AddControllers();
         }

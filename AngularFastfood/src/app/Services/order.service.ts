@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpRequest } from "@angular/common/http";
 import { Observable, observable, of } from "rxjs";
 import { catchError, map, tap } from 'rxjs/operators';
 import { Order, ClassOrder } from '../Models/Order'
@@ -17,7 +17,8 @@ export class OrderService {
   ) { }
 
   httpOptionsJson = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }), withCredentials: true
+    //request: new HttpRequest
   }
 
   GetOrder(): Observable<Order> {

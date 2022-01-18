@@ -17,9 +17,11 @@ export class LoginService {
   ) { }
 
   httpOptions = {
+    // withCredentials is needed to send the cookie, because it is be default set to false.
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }), withCredentials: true
   }
 
+  // Det er en post request for ikke at sende password i url'en
   ToLogin(email: string, password: string): Observable<Login> {
     let login = new ClassLogin();
     login.email = email;

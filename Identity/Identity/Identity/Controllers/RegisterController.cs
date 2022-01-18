@@ -45,7 +45,6 @@ namespace Identity.Controllers
             var result = await _signInManager.PasswordSignInAsync(register.email, register.password, register.rememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
             {
-                //SameSiteMode.None;
                 register.password = "";
                 register.confirmPassword = "";
                 _logger.LogInformation($"User with email = {register.email} logged in.");
