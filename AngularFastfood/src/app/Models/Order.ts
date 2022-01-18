@@ -1,15 +1,15 @@
 import { Accessory, ClassAccessory } from "../Models/Accessory";
 
-export class ClassProduct{
-    name: string;
-    price: number;
-    Description: string;
-    
+export class ClassOrder{
+    id: number;
+    customerId: number;
+    date: Date;
+    statusId: number;
 }
 
-export interface Product{
-    name: string;
-    price: number;
-    Description: string;
-    Accessory: Accessory;
+export interface Order{
+    id: number;
+    customerId: number;
+    date: Date;
+    statusId: number;   
 }

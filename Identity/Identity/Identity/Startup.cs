@@ -2,6 +2,7 @@ using Identity.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -20,6 +21,7 @@ namespace Identity
 {
     public class Startup
     {
+        readonly string test = "test";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -36,13 +38,26 @@ namespace Identity
             services.AddDbContext<WebshopContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("FastfoodServer")));
-            services.AddControllersWithViews();
-            services.AddRazorPages();
+            
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: test,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                                  });
+            });
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.SameSite = SameSiteMode.Strict;
+            });
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -56,18 +71,15 @@ namespace Identity
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+      
             app.UseRouting();
-
+            app.UseCors(test);
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }

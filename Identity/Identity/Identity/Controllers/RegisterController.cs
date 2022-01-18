@@ -38,16 +38,17 @@ namespace Identity.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route("Login")]
         public async Task<ActionResult<Register>> Login(Register register)
         {
             var result = await _signInManager.PasswordSignInAsync(register.email, register.password, register.rememberMe, lockoutOnFailure: false);
             if (result.Succeeded)
             {
+                //SameSiteMode.None;
                 register.password = "";
                 register.confirmPassword = "";
-                _logger.LogInformation("User logged in.");
+                _logger.LogInformation($"User with email = {register.email} logged in.");
                 return register;
             }
             return StatusCode(401);

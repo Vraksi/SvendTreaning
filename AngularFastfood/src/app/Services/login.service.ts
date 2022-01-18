@@ -9,20 +9,23 @@ import { Login, ClassLogin } from '../Models/Login'
 })
 export class LoginService {
 
-  private loginUrl = 'api/orders';
+  private loginUrl = 'api/Register/';
   login: Login 
 
   constructor(
     private http: HttpClient
   ) { }
 
-  httpOptionsJson = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }), withCredentials: true
   }
 
   ToLogin(email: string, password: string): Observable<Login> {
-    const url = `${this.loginUrl}VerifyPassword/?email=${email}&password=${password}`;
-    return this.http.get<Login>(url, this.httpOptionsJson)
+    let login = new ClassLogin();
+    login.email = email;
+    login.password = password;
+    const url = `${this.loginUrl}login`;
+    return this.http.post<Login>(url, login, this.httpOptions)
       .pipe(
         tap(res => console.log('HTTP response:', res)),
       )
@@ -30,7 +33,7 @@ export class LoginService {
   
   ToRegister(email: string, password: string, verifyPassword: string): Observable<Login> {
     const url = `${this.loginUrl}VerifyPassword/?email=${email}&password=${password}`;
-    return this.http.get<Login>(url, this.httpOptionsJson)
+    return this.http.get<Login>(url, this.httpOptions)
       .pipe(
         tap(res => console.log('HTTP response:', res)),
     
