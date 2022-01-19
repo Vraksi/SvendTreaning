@@ -39,17 +39,20 @@ namespace Identity
                 options.UseSqlServer(
                     Configuration.GetConnectionString("FastfoodServer")));
             
+            // adding cors policy so that front end and bakcend can talk to eachother
             services.AddCors(options =>
             {
                 options.AddPolicy(name: test,
                                   builder =>
                                   {
                                       builder.WithOrigins("http://localhost:4200")
+                                      // Should be explained but should be able to just google the definition
                                         .AllowAnyHeader()
                                         .AllowCredentials();
                                   });
             });
-            services.AddDataProtection();
+
+            // Requires the user to be authenticated for them to able to use the database
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("RequiredAuthenticatedUser", policy => {
@@ -57,6 +60,9 @@ namespace Identity
                 });
                 //options.AddPolicy("A", policy => policy.AddAuthenticationSchemes("Admin"));
             });
+            // samesite is for using setting cookie policy,
+            // none means thirdparty cookies are accepted.
+            // lax means just first party cookies
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.SameSite = SameSiteMode.None;
@@ -83,6 +89,7 @@ namespace Identity
             app.UseStaticFiles();
       
             app.UseRouting();
+            //needed for the cors policy to take effect.
             app.UseCors(test);
             app.UseAuthentication();
             app.UseAuthorization();
