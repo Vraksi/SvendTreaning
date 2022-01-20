@@ -18,7 +18,6 @@ export class OrderService {
 
   httpOptionsJson = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }), withCredentials: true
-    //request: new HttpRequest
   }
 
   GetOrder(): Observable<Order> {

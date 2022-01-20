@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, observable, of } from "rxjs";
 import { catchError, map, tap } from 'rxjs/operators';
 import { Login, ClassLogin } from '../Models/Login'
+import { Header } from './SharedHeader';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,11 @@ import { Login, ClassLogin } from '../Models/Login'
 export class LoginService {
 
   private loginUrl = 'api/Register/';
-  login: Login 
+  login: Login;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private headerOptions: Header
   ) { }
 
   httpOptions = {
@@ -27,18 +29,18 @@ export class LoginService {
     login.email = email;
     login.password = password;
     const url = `${this.loginUrl}login`;
-    return this.http.post<Login>(url, login, this.httpOptions)
+    return this.http.post<Login>(url, login, this.headerOptions.httpOptions)
       .pipe(
         tap(res => console.log('HTTP response:', res)),
       )
   }
   
+  // TODO skal laves om sådan at den ikke sender informationen igennem url'en
   ToRegister(email: string, password: string, verifyPassword: string): Observable<Login> {
     const url = `${this.loginUrl}VerifyPassword/?email=${email}&password=${password}`;
     return this.http.get<Login>(url, this.httpOptions)
       .pipe(
         tap(res => console.log('HTTP response:', res)),
-    
       )
 
   }
