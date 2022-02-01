@@ -1,22 +1,33 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-lg">
+<!--
+   TODO: the screen size will adjust down to the smallest size it can accomodate but i can for the life of me 
+   just not get it show the content after dropdown the menu and collapse its just gone Example works so im missing something
+   But it works for now so im just going with it
+-->
+
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    <a class="navbar-brand" href="#">CompanyLogo</a>
-
-    <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navbarSupportedContent">
-      <li class="nav-item"><a class="nav-link active" routerLink="/FrontPage">Frontpage</a></li>
-      <li class="nav-item"><a class="nav-link" routerLink="/Food">Food</a></li>
-      <li class="nav-item"><a class="nav-link" routerLink="">Login</a></li>
-      <li class="nav-item"><a class="nav-link" aria-current="page" href="#" routerLink="">Peta</a></li>
-
-    </ul>
-    <form class="d-flex">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Search</button>
-    </form>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navbarSupportedContent">
+        <li class="nav-item"><a class="nav-link active" routerLink="/FrontPage">Frontpage</a></li>
+        <li class="nav-item"><a class="nav-link" aria-current="page" href="#" routerLink="/Food">Food</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="">Login</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="">Peta</a></li>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
     </div>
+
   </div>
+
+
 </nav>
