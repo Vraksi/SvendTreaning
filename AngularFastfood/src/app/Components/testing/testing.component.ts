@@ -21,6 +21,7 @@ export class TestingComponent implements OnInit {
 
   ngOnInit(): void {
     this.ToLogin();
+    this.GetOrder();
   }
 
   private ToLogin(){

@@ -53,6 +53,22 @@ namespace Identity.Controllers
             return StatusCode(401);
         }
 
+        //TODO: TEST logout 
+        //TODO: Check if logged in
+        [HttpPost]
+        [Route("CheckLoggedIn")]
+        public async Task<ActionResult> Logout()
+        {
+            bool isauth = User.Identity.IsAuthenticated;
+            if (!isauth)
+            {
+                await _signInManager.SignOutAsync();
+                _logger.LogInformation("User logged out.");
+                return StatusCode(205);
+            }
+            return StatusCode(200);
+        }
+
         //TODO: burde måske være en POST for at kunne sende en json body.
         [HttpGet]
         [Route("RegisterUser")]
