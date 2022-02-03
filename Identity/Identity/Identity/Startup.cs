@@ -51,7 +51,6 @@ namespace Identity
                                         .AllowCredentials();
                                   });
             });
-
             // Requires the user to be authenticated for them to able to use the database
             services.AddAuthorization(options =>
             {
@@ -65,6 +64,7 @@ namespace Identity
             // lax means just first party cookies
             services.ConfigureApplicationCookie(options =>
             {
+                options.Cookie.Name = "Doom";
                 options.Cookie.SameSite = SameSiteMode.None;
             });
             services.AddControllers();

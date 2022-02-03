@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ClassLogin, Login } from 'src/app/Models/Login';
 import { LoginService } from 'src/app/Services/login.service';
 
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -14,7 +15,8 @@ export class NavbarComponent implements OnInit {
 
   //Login element of this part should probably be a popup of some kind so that.
 
-  _login: ClassLogin;
+  _login = new ClassLogin();
+  isLoggedIn: boolean;
 
   constructor(
     private loginService: LoginService

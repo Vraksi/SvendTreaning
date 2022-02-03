@@ -1,3 +1,11 @@
+.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid #46a942; /* green */
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid #cec326; /* red */
+} 
+
 /*
 ul {
     list-style-type: none;

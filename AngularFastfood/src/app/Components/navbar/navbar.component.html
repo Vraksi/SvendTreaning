@@ -16,33 +16,36 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="navbarSupportedContent">
-        <li class="nav-item"><a class="nav-link active" routerLink="/FrontPage">Frontpage</a></li>
+        <li class="nav-item"><a class="nav-link active" routerLink="/home">Frontpage</a></li>
         <li class="nav-item"><a class="nav-link" routerLink="/products">Food</a></li>
         <li class="nav-item"><a class="nav-link" routerLink="">Login</a></li>
         <li class="nav-item"><a class="nav-link" routerLink="">Peta</a></li>
       </ul>
 
       <!--ngif cookie is present-->
-      <div>
+      <div class="col-6">
         <form (ngSubmit)="ToLogin(_login)" #loginForm="ngForm" class="d-flex">
-          <label for="ToLogin"></label>
+
           <div class="d-flex">
-            
-            <input class="form-control me-2" type="text"  placeholder="Email" required
-              [(ngModel)]="_login.email" #loginEmail="ngModel">
-            <div [hidden]="loginEmail.valid || loginEmail.pristine">
+
+            <input class="form-control me-2" type="text" placeholder="Email" required [(ngModel)]="_login.email"
+              name="email" #loginemail="ngModel">
+            <!-- Er ikke nødvendig for hvad jeg gerne vil, er for demonstrering af funktionalitet-->
+            <div class="text-wrap" [hidden]="loginemail.valid || loginemail.pristine">
               Email is required
             </div>
 
-            <input class="form-control me-2" type="text" name="loginPassword" id="loginPassword" placeholder="Password" required
-              [(ngModel)]="_login.email" #loginPassword="ngModel">
-            <div [hidden]="loginEmail.valid || loginEmail.pristine">
-              Password is required
+            <input class="form-control me-2" type="text" name="password" placeholder="Password" required
+              [(ngModel)]="_login.password" #loginPassword="ngModel">
+            <div class="text-wrap" [hidden]="loginPassword.valid || loginPassword.pristine">
+              Email is required
             </div>
 
           </div>
-          <button class="btn border" type="submit">Login</button>
+          <button class="btn border" [disabled]="!loginForm.valid" type="submit">Login</button>
+
         </form>
+
 
       </div>
     </div>

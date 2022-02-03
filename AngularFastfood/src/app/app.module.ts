@@ -11,6 +11,7 @@ import { HeaderComponent } from './Components/header/header.component';
 import { FooterComponent } from './Components/footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProductviewComponent } from './Components/productview/productview.component';
+import { FrontpageComponent } from './frontpage/frontpage.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { ProductviewComponent } from './Components/productview/productview.compo
     HeaderComponent,
     FooterComponent,
     ProductviewComponent,
+    FrontpageComponent,
     
   ],
   imports: [
