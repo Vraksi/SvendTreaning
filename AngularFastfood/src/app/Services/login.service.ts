@@ -23,15 +23,33 @@ export class LoginService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }), withCredentials: true
   }
 
+  ToLogOut(){
+    const url = `${this.loginUrl}LogOut`;
+    return this.http.get(url, this.headerOptions.generalHttpOptions)
+      .pipe(
+        tap(res => {
+          console.log('You logged out res = ', res)
+          
+      }))
+  }
+
+  CheckIfLoggedOut(){
+    const url = `${this.loginUrl}CheckLogin`; 
+    return this.http.get(url, this.headerOptions.generalHttpOptions)
+      .pipe(
+        tap(res => console.log('HTTP response', res))
+      )
+  }
+
   // Det er en post request for ikke at sende password i url'en
   ToLogin(email: string, password: string): Observable<Login> {
     let login = new ClassLogin();
     login.email = email;
     login.password = password;
     const url = `${this.loginUrl}login`;
-    return this.http.post<Login>(url, login, this.headerOptions.httpOptions)
+    return this.http.post<Login>(url, login, this.headerOptions.generalHttpOptions)
       .pipe(
-        tap(res => console.log('HTTP response:', res)),
+        tap(res => console.log('HTTP response:', res))
       )
   }
   

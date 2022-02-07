@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ClassLogin, Login } from 'src/app/Models/Login';
 import { LoginService } from 'src/app/Services/login.service';
 import { CookieHelperService } from 'src/app/Services/cookie-helper.service';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Component({
@@ -20,32 +21,36 @@ export class NavbarComponent implements OnInit {
   isLoggedIn: boolean;
 
   constructor(
-    private loginService: LoginService,
-    private cookieHelper: CookieHelperService
+    private loginService: LoginService
   ) { }
 
   ngOnInit(): void {
-    
     this.isLoggedIn = false;
-    this.isLoggedIn = this.cookieHelper.CheckIfLoggedIn();
+    this.CheckLogin();
+    //this.isLoggedIn = this.loginService.CheckIfLoggedOut();
     console.log("I STARTED " + this.isLoggedIn);
   }
   
-  //TODO request to server
+  //Makes a request to the server to log out it does this by deleting the cookie from identity
   LogOut(){
-    console.log("you logged out");
-    this.cookieHelper.DeleteCookieDoom;
+    this.loginService.ToLogOut()
+      .subscribe()
   }
   
+  
   //TODO needs a check whether or not token is still valid when opening website (request to server)
-
+  CheckLogin(){
+    this.loginService.CheckIfLoggedOut()
+      .subscribe(res => 
+        console.log(res)
+      )
+  }
 
   ToLogin(_login: ClassLogin){
     this.loginService.ToLogin(_login.email, _login.password)
-      .subscribe(login => 
-        this._login = login)
-
-    this.isLoggedIn = this.cookieHelper.CheckIfLoggedIn();
+      .subscribe(login => { 
+        this._login = login;
+      })
   }
 
 }

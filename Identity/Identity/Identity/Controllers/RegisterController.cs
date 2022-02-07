@@ -37,6 +37,7 @@ namespace Identity.Controllers
             _context = context;
         }
 
+  
 
         [HttpPost]
         [Route("Login")]
@@ -53,19 +54,31 @@ namespace Identity.Controllers
             return StatusCode(401);
         }
 
-        //TODO: TEST logout 
-        //TODO: Check if logged in
-        [HttpPost]
-        [Route("CheckLoggedIn")]
-        public async Task<ActionResult> Logout()
+        // using the identity signinmanager to log out a user
+        [HttpGet]
+        [Route("LogOut")]
+        public async Task<ActionResult> LogOut()
         {
-            bool isauth = User.Identity.IsAuthenticated;
-            if (!isauth)
+            if (User.Identity.IsAuthenticated)
             {
                 await _signInManager.SignOutAsync();
-                _logger.LogInformation("User logged out.");
-                return StatusCode(205);
+                _logger.LogInformation("User logged out");
+                return StatusCode(200);
             }
+            else
+            {
+                await _signInManager.SignOutAsync(); // Dunno if this breaks it.
+                _logger.LogInformation("You shouldnt be able to do this");
+                return StatusCode(402);
+            }
+        }
+
+        //TODO: Check if logged in
+        [HttpPost]
+        [Route("CheckLogin")]
+        public async Task<ActionResult> Logout()
+        {
+            var isauth = User.Identity.IsAuthenticated;
             return StatusCode(200);
         }
 

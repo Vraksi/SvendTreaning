@@ -64,7 +64,7 @@ namespace Identity
             // lax means just first party cookies
             services.ConfigureApplicationCookie(options =>
             {
-                options.Cookie.Name = "Doom";
+                options.Cookie.Name = "doom";
                 options.Cookie.SameSite = SameSiteMode.None;
             });
             services.AddControllers();

@@ -20,14 +20,14 @@ export class TestingComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.ToLogin();
     this.GetOrder();
   }
 
   private ToLogin(){
     this.loginService.ToLogin("jegerenewmwail@treuessss.dk", "/JEgeretsikkertpassword123")
-      .subscribe(login => 
-        this._Login = login)
+      .subscribe(login => {
+        this._Login = login          
+      })      
   }
 
   public GetOrder(){

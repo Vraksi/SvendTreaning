@@ -8,7 +8,7 @@ import { Injectable } from "@angular/core";
     providedIn: 'root',
 })
 export class Header{
-    httpOptions = {
+    generalHttpOptions = {
         // withCredentials is needed to send the cookie, because it is be default set to false.
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }), withCredentials: true
       }

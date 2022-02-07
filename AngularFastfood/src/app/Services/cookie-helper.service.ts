@@ -34,29 +34,5 @@ export class CookieHelperService {
       
       return existing;
     }
-  }
-
-  CheckIfLoggedIn(): boolean {
-    var existing: any = this.cookie.get("Doom")
-    if(existing == null){
-      console.log("you fucked up")
-      return false;
-    }
-    else{
-      console.log("you are logged in")
-      return true;
-    }
-  }
-
-  DeleteCookieDoom(){
-    var existing: any = this.cookie.get("Doom");
-    if(existing != null){
-      console.log("you logged out");
-      this.cookie.delete("Doom", '/')
-
-    }
-    else{
-      console.log("you fucked up");
-    }
-  }
+  } 
 }
