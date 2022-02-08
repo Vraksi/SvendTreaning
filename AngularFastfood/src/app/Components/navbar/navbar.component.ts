@@ -18,32 +18,33 @@ export class NavbarComponent implements OnInit {
   //Login element of this part should probably be a popup of some kind so that.
 
   _login = new ClassLogin();
-  isLoggedIn: boolean;
+  _isLoggedIn: boolean;
 
   constructor(
     private loginService: LoginService
   ) { }
 
   ngOnInit(): void {
-    this.isLoggedIn = false;
+    this._isLoggedIn = false;
     this.CheckLogin();
     //this.isLoggedIn = this.loginService.CheckIfLoggedOut();
-    console.log("I STARTED " + this.isLoggedIn);
+    console.log("am i logged in " + this._isLoggedIn);
   }
   
   //Makes a request to the server to log out it does this by deleting the cookie from identity
   LogOut(){
     this.loginService.ToLogOut()
-      .subscribe()
+      .subscribe()  
   }
   
   
   //TODO needs a check whether or not token is still valid when opening website (request to server)
   CheckLogin(){
     this.loginService.CheckIfLoggedOut()
-      .subscribe(res => 
-        console.log(res)
-      )
+      .subscribe(res => {
+        this._isLoggedIn = res;
+        console.log("dwaw", this._isLoggedIn)
+      })
   }
 
   ToLogin(_login: ClassLogin){

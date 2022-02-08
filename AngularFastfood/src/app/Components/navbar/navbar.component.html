@@ -23,7 +23,7 @@
       </ul>
 
       <!--ngif cookie is present-->
-      <div *ngIf="!isLoggedIn" class="col-6">
+      <div *ngIf="!_isLoggedIn" class="col-6">
         <form (ngSubmit)="ToLogin(_login)" #loginForm="ngForm" class="d-flex">
 
           <div class="d-flex">
@@ -45,7 +45,7 @@
           <button class="btn border" [disabled]="!loginForm.valid" type="submit">Login</button>
         </form>
       </div>
-      <div *ngIf="isLoggedIn">
+      <div *ngIf="_isLoggedIn">
         You are logged in
         <button class="btn border bg-primary" (click)="LogOut()">Logout</button>
       </div>

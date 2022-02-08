@@ -28,16 +28,15 @@ export class LoginService {
     return this.http.get(url, this.headerOptions.generalHttpOptions)
       .pipe(
         tap(res => {
-          console.log('You logged out res = ', res)
-          
+          console.log('You logged out')   
       }))
   }
 
-  CheckIfLoggedOut(){
+  CheckIfLoggedOut(): Observable<boolean>{
     const url = `${this.loginUrl}CheckLogin`; 
-    return this.http.get(url, this.headerOptions.generalHttpOptions)
+    return this.http.get<boolean>(url, this.headerOptions.generalHttpOptions)
       .pipe(
-        tap(res => console.log('HTTP response', res))
+        tap(res => console.log('HTTP Response from server', res))
       )
   }
 
@@ -62,6 +61,8 @@ export class LoginService {
       )
 
   }
+}
 
-
+export interface isLoggedIn{
+  isLoggedIn: boolean;
 }

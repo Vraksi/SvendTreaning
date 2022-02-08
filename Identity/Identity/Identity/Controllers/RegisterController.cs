@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 
 namespace Identity.Controllers
 {
+   
+
     [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
@@ -37,7 +39,6 @@ namespace Identity.Controllers
             _context = context;
         }
 
-  
 
         [HttpPost]
         [Route("Login")]
@@ -72,15 +73,7 @@ namespace Identity.Controllers
                 return StatusCode(402);
             }
         }
-
-        //TODO: Check if logged in
-        [HttpPost]
-        [Route("CheckLogin")]
-        public async Task<ActionResult> Logout()
-        {
-            var isauth = User.Identity.IsAuthenticated;
-            return StatusCode(200);
-        }
+       
 
         //TODO: burde måske være en POST for at kunne sende en json body.
         [HttpGet]
@@ -125,5 +118,30 @@ namespace Identity.Controllers
 
             }
         }
+
+
+        #region For checking if the person is logged in on the website
+        internal class LoggedInBool
+        {
+            public bool isLoggedIn { get; set; }
+            //public string str { get; set; }
+        }
+
+        //TODO: Check if logged in
+        [HttpGet]
+        [Route("CheckLogin")]
+        public async Task<ActionResult<bool>> Logout()
+        {
+            bool res = true;
+            // a little unsure if this works the way its intended but for now it just works :=)
+            await Task.Run(() => { res = IsUserAuth(); });
+            return res;
+        }
+
+        public bool IsUserAuth()
+        {
+            return User.Identity.IsAuthenticated;
+        }
+        #endregion
     }
 }
