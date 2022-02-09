@@ -33,6 +33,8 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this._isLoggedIn = false;
     //this.CheckLogin();
+
+    //TODO: der skal skrive kommentare der forklare hvad der foregår, er lidt usikker på hvordan det fungere 100%
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required]
