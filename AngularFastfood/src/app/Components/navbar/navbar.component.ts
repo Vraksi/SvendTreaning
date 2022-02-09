@@ -3,6 +3,8 @@ import { ClassLogin, Login } from 'src/app/Models/Login';
 import { LoginService } from 'src/app/Services/login.service';
 import { CookieHelperService } from 'src/app/Services/cookie-helper.service';
 import { CookieService } from 'ngx-cookie-service';
+import { SocialAuthService, GoogleLoginProvider, SocialUser } from 'angularx-social-login';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -19,18 +21,44 @@ export class NavbarComponent implements OnInit {
 
   _login = new ClassLogin();
   _isLoggedIn: boolean;
+  socialUser: SocialUser;
+  loginForm: FormGroup;
 
   constructor(
-    private loginService: LoginService
+    private loginService: LoginService,
+    private formBuilder: FormBuilder,
+    private socialAuthService: SocialAuthService
   ) { }
 
   ngOnInit(): void {
     this._isLoggedIn = false;
-    this.CheckLogin();
+    //this.CheckLogin();
+    this.loginForm = this.formBuilder.group({
+      email: ['', Validators.required],
+      password: ['', Validators.required]
+    });    
+    
+    this.socialAuthService.authState.subscribe((user) => {
+      this.socialUser = user;
+      this._isLoggedIn = (user != null);
+      console.log(this.socialUser);
+    });
+
     //this.isLoggedIn = this.loginService.CheckIfLoggedOut();
     console.log("am i logged in " + this._isLoggedIn);
   }
   
+
+  loginWithGoogle(): void {
+    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+  logOut(): void {
+    this.socialAuthService.signOut();
+  }
+
+
+  //#region Identity Login
+
   //Makes a request to the server to log out it does this by deleting the cookie from identity
   LogOut(){
     this.loginService.ToLogOut()
@@ -53,5 +81,5 @@ export class NavbarComponent implements OnInit {
         this._login = login;
       })
   }
-
+  //#endregion
 }

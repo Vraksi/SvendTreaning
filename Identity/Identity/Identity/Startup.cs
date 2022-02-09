@@ -21,7 +21,7 @@ namespace Identity
 {
     public class Startup
     {
-        readonly string test = "test";
+        readonly string corsPolicyName = "corsPolicyName";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -42,7 +42,7 @@ namespace Identity
             // adding cors policy so that front end and bakcend can talk to eachother
             services.AddCors(options =>
             {
-                options.AddPolicy(name: test,
+                options.AddPolicy(name: corsPolicyName,
                                   builder =>
                                   {
                                       builder.WithOrigins("http://localhost:4200")
@@ -50,6 +50,11 @@ namespace Identity
                                         .AllowAnyHeader()
                                         .AllowCredentials();
                                   });
+            });
+            services.AddAuthentication().AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
             // Requires the user to be authenticated for them to able to use the database
             services.AddAuthorization(options =>
@@ -90,7 +95,7 @@ namespace Identity
       
             app.UseRouting();
             //needed for the cors policy to take effect.
-            app.UseCors(test);
+            app.UseCors(corsPolicyName);
             app.UseAuthentication();
             app.UseAuthorization();
 
