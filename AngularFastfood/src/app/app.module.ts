@@ -24,7 +24,7 @@ import { GoogleLoginProvider } from 'angularx-social-login';
     FooterComponent,
     ProductviewComponent,
     FrontpageComponent,
-    
+
   ],
   imports: [
     BrowserModule,
@@ -49,7 +49,7 @@ import { GoogleLoginProvider } from 'angularx-social-login';
           }
         ]
       } as SocialAuthServiceConfig,
-    }    
+    }
   ],
   bootstrap: [AppComponent]
 })

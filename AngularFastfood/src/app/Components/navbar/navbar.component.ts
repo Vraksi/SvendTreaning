@@ -38,38 +38,64 @@ export class NavbarComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.required],
       password: ['', Validators.required]
-    });    
-    
-    this.socialAuthService.authState.subscribe((user) => {
-      this.socialUser = user;
-      this._isLoggedIn = (user != null);
-      console.log(this.socialUser);
     });
-
     //this.isLoggedIn = this.loginService.CheckIfLoggedOut();
     console.log("am i logged in " + this._isLoggedIn);
   }
-  
 
-  loginWithGoogle(): void {
+  // en måde at gøre det på hvor funktionen bliver til en return type 
+  // Dette bliver til et promise<SocialUser> som vi kan bruge i vores ExternalLogin
+  SigninWithGoogle = () => {
+    return this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+  /* Dette fungere også men ikke sammen med det vi har gang med at logged ind i vores identity database
+  SigninWithGoogle() {
     this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
-  logOut(): void {
+  */
+
+
+
+  LogOutWithGoogle(): void {
     this.socialAuthService.signOut();
+  }
+
+  public ExternalLogin = () => {  
+  this.SigninWithGoogle()
+  .then(res => {
+    const user: SocialUser = { ...res };
+    this.socialUser = user;
+    this._isLoggedIn = (user != null);
+    console.log(user);
+    const externalAuthDto: ExternalAuthDto = {
+      provider: user.provider,
+      idToken: user.idToken
+    }
+
+  }, error => console.log(error))}
+
+  private ValidateExternalAuth(externalAuth: ExternalAuthDto){
+    this.loginService.externalLogin('api/accounts/externallogin', externalAuth)
+      .subscribe(res => {
+        localStorage.setItem("token", res.token);
+      },
+      error => {
+        console.log(error)
+      });
   }
 
 
   //#region Identity Login
 
   //Makes a request to the server to log out it does this by deleting the cookie from identity
-  LogOut(){
+  LogOut() {
     this.loginService.ToLogOut()
-      .subscribe()  
+      .subscribe()
   }
-  
-  
+
+
   //TODO needs a check whether or not token is still valid when opening website (request to server)
-  CheckLogin(){
+  CheckLogin() {
     this.loginService.CheckIfLoggedOut()
       .subscribe(res => {
         this._isLoggedIn = res;
@@ -77,11 +103,16 @@ export class NavbarComponent implements OnInit {
       })
   }
 
-  ToLogin(_login: ClassLogin){
+  ToLogin(_login: ClassLogin) {
     this.loginService.ToLogin(_login.email, _login.password)
-      .subscribe(login => { 
+      .subscribe(login => {
         this._login = login;
       })
   }
   //#endregion
+}
+
+export interface ExternalAuthDto {
+  provider: string;
+  idToken: string;
 }

@@ -39,7 +39,11 @@ export class LoginService {
         tap(res => console.log('HTTP Response from server', res))
       )
   }
+  public externalLogin = (route: string, body: ExternalAuthDto) => {
+    return this.http.post<AuthResponseDto>("http://localhost:5000/api/Register/RegisterUser/", body);
+  }
 
+  
   // Det er en post request for ikke at sende password i url'en
   ToLogin(email: string, password: string): Observable<Login> {
     let login = new ClassLogin();
@@ -65,4 +69,18 @@ export class LoginService {
 
 export interface isLoggedIn{
   isLoggedIn: boolean;
+}
+
+export interface ExternalAuthDto {
+  provider: string;
+  idToken: string;
+}
+
+
+export interface AuthResponseDto {
+  isAuthSuccessful: boolean;
+  errorMessage: string;
+  token: string;
+  is2StepVerificationRequired: boolean;
+  provider: string;
 }

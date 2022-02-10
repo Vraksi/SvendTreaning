@@ -1,11 +1,14 @@
-﻿using Identity.Areas.Identity.Pages.Account;
+﻿using Google.Apis.Auth;
+using Identity.Areas.Identity.Pages.Account;
 using Identity.Data;
 using Identity.Models;
+using Identity.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -14,8 +17,8 @@ using System.Threading.Tasks;
 
 namespace Identity.Controllers
 {
-   
 
+    //TODO: Renames til IdentityController
     [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
@@ -25,7 +28,6 @@ namespace Identity.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly WebshopContext _context;
-
         public RegisterController(
             SignInManager<IdentityUser> signInManager,
             ILogger<LoginModel> logger,
@@ -39,7 +41,7 @@ namespace Identity.Controllers
             _context = context;
         }
 
-
+        #region IdentityLogin
         [HttpPost]
         [Route("Login")]
         public async Task<ActionResult<Register>> Login(Register register)
@@ -119,13 +121,6 @@ namespace Identity.Controllers
             }
         }
 
-
-        #region For checking if the person is logged in on the website
-        internal class LoggedInBool
-        {
-            public bool isLoggedIn { get; set; }
-            //public string str { get; set; }
-        }
 
         //TODO: Check if logged in
         [HttpGet]
