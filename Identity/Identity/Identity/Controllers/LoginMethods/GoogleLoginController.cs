@@ -1,16 +1,36 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Identity.Data;
+using Identity.Models.DataTransferObjects;
+using Identity.Models;
+using Identity.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Identity.Controllers.LoginMethods
 {
+    [AllowAnonymous]
+    [Route("api/[controller]")]
+    [ApiController]
     public class GoogleLoginController : Controller
     {
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly JwtHandler _jwtHandler;
+        public GoogleLoginController(
+            UserManager<IdentityUser> userManager,
+            JwtHandler jwtHandler
+            )
+        {
+            _userManager = userManager;
+            _jwtHandler = jwtHandler;
+        }
 
         //TODO: Constructor og parameters
         #region Google Login        
         [HttpPost("ExternalLogin")]
         public async Task<IActionResult> ExternalLogin([FromBody] ExternalAuthDto externalAuth)
         {
-            var payload = await JwtHandler.VerifyGoogleToken(externalAuth); //GoogleJsonWebSignature.VerifyGoogleToken(externalAuth);
+            var payload = await _jwtHandler.VerifyGoogleToken(externalAuth); //GoogleJsonWebSignature.VerifyGoogleToken(externalAuth);
             if (payload == null)
                 return BadRequest("Invalid External Authentication.");
 
@@ -45,7 +65,6 @@ namespace Identity.Controllers.LoginMethods
             var token = await _jwtHandler.GenerateToken(user);
             return Ok(new AuthResponseDto { Token = token, IsAuthSuccessful = true });
         }
-
 
         #endregion
         public IActionResult Index()

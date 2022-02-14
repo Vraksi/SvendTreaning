@@ -10,7 +10,8 @@ import { Header } from './SharedHeader';
 })
 export class LoginService {
 
-  private loginUrl = 'api/Register/';
+  private IdentityLoginUrl = 'api/Register/';
+  private googleLoginUrl = "api/googlelogin/";
   login: Login;
 
   constructor(
@@ -24,7 +25,7 @@ export class LoginService {
   }
 
   ToLogOut(){
-    const url = `${this.loginUrl}LogOut`;
+    const url = `${this.IdentityLoginUrl}LogOut`;
     return this.http.get(url, this.headerOptions.generalHttpOptions)
       .pipe(
         tap(res => {
@@ -33,14 +34,16 @@ export class LoginService {
   }
 
   CheckIfLoggedOut(): Observable<boolean>{
-    const url = `${this.loginUrl}CheckLogin`; 
+    const url = `${this.IdentityLoginUrl}CheckLogin`; 
     return this.http.get<boolean>(url, this.headerOptions.generalHttpOptions)
       .pipe(
         tap(res => console.log('HTTP Response from server', res))
       )
   }
-  public externalLogin = (route: string, body: ExternalAuthDto) => {
-    return this.http.post<AuthResponseDto>("http://localhost:5000/api/Register/RegisterUser/", body);
+  
+  public externalLogin = (body: ExternalAuthDto) => {
+    const url = `${this.googleLoginUrl}ExternalLogin`
+    return this.http.post<AuthResponseDto>(url, body);
   }
 
   
@@ -49,7 +52,7 @@ export class LoginService {
     let login = new ClassLogin();
     login.email = email;
     login.password = password;
-    const url = `${this.loginUrl}login`;
+    const url = `${this.IdentityLoginUrl}login`;
     return this.http.post<Login>(url, login, this.headerOptions.generalHttpOptions)
       .pipe(
         tap(res => console.log('HTTP response:', res))
@@ -58,7 +61,7 @@ export class LoginService {
   
   // TODO skal laves om sådan at den ikke sender informationen igennem url'en
   ToRegister(email: string, password: string, verifyPassword: string): Observable<Login> {
-    const url = `${this.loginUrl}VerifyPassword/?email=${email}&password=${password}`;
+    const url = `${this.IdentityLoginUrl}VerifyPassword/?email=${email}&password=${password}`;
     return this.http.get<Login>(url, this.httpOptions)
       .pipe(
         tap(res => console.log('HTTP response:', res)),

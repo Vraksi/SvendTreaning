@@ -54,8 +54,6 @@ export class NavbarComponent implements OnInit {
   }
   */
 
-
-
   LogOutWithGoogle(): void {
     this.socialAuthService.signOut();
   }
@@ -71,11 +69,11 @@ export class NavbarComponent implements OnInit {
       provider: user.provider,
       idToken: user.idToken
     }
-
+    this.ValidateExternalAuth(externalAuthDto);
   }, error => console.log(error))}
 
   private ValidateExternalAuth(externalAuth: ExternalAuthDto){
-    this.loginService.externalLogin('api/accounts/externallogin', externalAuth)
+    this.loginService.externalLogin(externalAuth)
       .subscribe(res => {
         localStorage.setItem("token", res.token);
       },

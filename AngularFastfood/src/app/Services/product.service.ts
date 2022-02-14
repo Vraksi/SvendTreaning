@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, observable, of } from "rxjs";
 import { catchError, map, tap } from 'rxjs/operators';
-import { Login, ClassLogin } from '../Models/Login'
+import { Login, ClassLogin } from '../Models/Login';
 import { Product } from '../Models/Product';
 
 @Injectable({
@@ -26,6 +26,6 @@ export class ProductService {
     return this.http.get<Product[]>(url, this.httpOptionsJson)
      .pipe(
        tap(res => console.log('HTTP res: ', res))
-     ) 
+     )
   }
 }
