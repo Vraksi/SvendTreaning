@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace Identity.Controllers.LoginMethods
 {
@@ -63,6 +64,7 @@ namespace Identity.Controllers.LoginMethods
             //check for the Locked out account
 
             var token = await _jwtHandler.GenerateToken(user);
+            Console.WriteLine(token);
             return Ok(new AuthResponseDto { Token = token, IsAuthSuccessful = true });
         }
 

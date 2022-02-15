@@ -93,13 +93,10 @@ namespace Identity
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("securityKey").Value))
                 };
             });
+
             services.AddScoped<JwtHandler>();
             
-            services.AddAuthentication().AddGoogle(googleOptions =>
-            {
-                googleOptions.ClientId = Configuration["GoogleAuthSettings:ClientId"];
-                googleOptions.ClientSecret = Configuration["GoogleAuthSettings:ClientSecret"];
-            });
+            services.AddAuthentication()
             // Requires the user to be authenticated for them to able to use the database
             services.AddAuthorization(options =>
             {
