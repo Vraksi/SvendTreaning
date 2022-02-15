@@ -4,6 +4,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
+import { GoogleLoginProvider } from 'angularx-social-login';
 import { TestingComponent } from './Components/testing/testing.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './Components/navbar/navbar.component';
@@ -29,9 +32,26 @@ import { FrontpageComponent } from './Components/frontpage/frontpage.component';
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
+    SocialLoginModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '929177559568-aiaum2hs46ede902tsurc8i0valrso6s.apps.googleusercontent.com'
+            )
+          }
+        ]
+      } as SocialAuthServiceConfig,
+    }    
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
