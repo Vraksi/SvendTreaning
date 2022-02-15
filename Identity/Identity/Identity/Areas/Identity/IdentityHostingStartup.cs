@@ -14,6 +14,7 @@ namespace Identity.Areas.Identity
     {
         public void Configure(IWebHostBuilder builder)
         {
+            /*
             builder.ConfigureServices((context, services) => {
                services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                //For at roles fungere skal man have addroles<IdentityRole>() med   
@@ -32,6 +33,7 @@ namespace Identity.Areas.Identity
 
                 });
             });
+            */
         }
     }
 }

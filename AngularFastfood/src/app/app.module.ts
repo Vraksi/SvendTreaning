@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TestingComponent } from './Components/testing/testing.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NavbarComponent } from './Components/navbar/navbar.component';
 import { HeaderComponent } from './Components/header/header.component';
 import { FooterComponent } from './Components/footer/footer.component';
@@ -14,6 +14,7 @@ import { ProductviewComponent } from './Components/productview/productview.compo
 import { FrontpageComponent } from './Components/frontpage/frontpage.component';
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider } from 'angularx-social-login';
+import { CustomHttpInterceptor } from './Services/CustomHttpInterceptor';
 
 @NgModule({
   declarations: [
@@ -49,8 +50,14 @@ import { GoogleLoginProvider } from 'angularx-social-login';
           }
         ]
       } as SocialAuthServiceConfig,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CustomHttpInterceptor,
+      multi: true
     }
   ],
+  
   bootstrap: [AppComponent]
 })
 export class AppModule { }

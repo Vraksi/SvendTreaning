@@ -15,12 +15,12 @@ export class CookieHelperService {
   //for at sætte bearertoken
   SetBearertoken(bearerToken: string)
   {
-    this.cookie.set("Doom", bearerToken);
+    this.cookie.set("doom", bearerToken);
   }
 
   //for at kunne få fat i den token der ligger gemt i cookies
   GetBearertoken() {
-    var existing: any = this.cookie.get("bearertoken");
+    var existing: any = this.cookie.get("doom");
 
     if (existing == null)
     {

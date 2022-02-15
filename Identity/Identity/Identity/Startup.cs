@@ -39,8 +39,22 @@ namespace Identity
             services.AddDbContext<WebshopContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("FastfoodServer")));
+
+            // adding cors policy so that front end and bakcend can talk to eachother
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: corsPolicyName,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("http://localhost:4200")
+                                      // Should be explained but should be able to just google the definition
+                                        .AllowAnyHeader()
+                                        .AllowCredentials();
+                                  });
+            });
             // This method gets called by the runtime. Use this method to add services to the container.
-            services.Configure<IdentityOptions>(options =>
+
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 // Password settings.
                 options.Password.RequireDigit = true;
@@ -59,26 +73,19 @@ namespace Identity
                 options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+!";
                 options.User.RequireUniqueEmail = true;
-            });
+            })
+             .AddEntityFrameworkStores<ApplicationDbContext>()
+             .AddDefaultTokenProviders();
 
-            // adding cors policy so that front end and bakcend can talk to eachother
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: corsPolicyName,
-                                  builder =>
-                                  {
-                                      builder.WithOrigins("http://localhost:4200")
-                                      // Should be explained but should be able to just google the definition
-                                        .AllowAnyHeader()
-                                        .AllowCredentials();
-                                  });
-            });
+
+
 
             var jwtSettings = Configuration.GetSection("JwtSettings");
             services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -93,18 +100,23 @@ namespace Identity
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("securityKey").Value))
                 };
             });
-
             services.AddScoped<JwtHandler>();
-            
-            services.AddAuthentication()
+
+            services.AddAuthentication().AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = Configuration["GoogleAuthSettings:ClientId"];
+                googleOptions.ClientSecret = Configuration["GoogleAuthSettings:ClientSecret"];
+            });
             // Requires the user to be authenticated for them to able to use the database
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("RequiredAuthenticatedUser", policy => {
+                options.AddPolicy("RequiredAuthenticatedUser", policy =>
+                {
                     policy.RequireAuthenticatedUser();
                 });
                 //options.AddPolicy("A", policy => policy.AddAuthenticationSchemes("Admin"));
             });
+
             // samesite is for using setting cookie policy,
             // none means thirdparty cookies are accepted.
             // lax means just first party cookies
@@ -133,7 +145,7 @@ namespace Identity
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-      
+
             app.UseRouting();
             //needed for the cors policy to take effect.
             app.UseCors(corsPolicyName);

@@ -12,7 +12,7 @@ using System.Linq.Expressions;
 
 namespace Identity.Controllers
 {
-    [Authorize]
+    
     [Route("api/[controller]")]
     [ApiController]
     public class OrdersController : ControllerBase
@@ -25,7 +25,6 @@ namespace Identity.Controllers
         }
 
         // GET: api/Orders
-        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {

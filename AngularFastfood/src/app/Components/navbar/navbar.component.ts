@@ -21,6 +21,7 @@ export class NavbarComponent implements OnInit {
 
   _login = new ClassLogin();
   _isLoggedIn: boolean;
+  externalLoggedIn: boolean;
   socialUser: SocialUser;
   loginForm: FormGroup;
 
@@ -54,10 +55,6 @@ export class NavbarComponent implements OnInit {
   }
   */
 
-  LogOutWithGoogle(): void {
-    this.socialAuthService.signOut();
-  }
-
   public ExternalLogin = () => {  
   this.SigninWithGoogle()
   .then(res => {
@@ -76,12 +73,23 @@ export class NavbarComponent implements OnInit {
     this.loginService.externalLogin(externalAuth)
       .subscribe(res => {
         localStorage.setItem("token", res.token);
+        this.externalLoggedIn == true;
       },
       error => {
+        this.externalLoggedIn == false;
         console.log(error)
       });
   }
 
+  LogoutExternal = () =>{
+    localStorage.removeItem("token")
+
+    if(this.externalLoggedIn){
+      this.socialAuthService.signOut();
+    }
+
+    
+  }
 
   //#region Identity Login
 
