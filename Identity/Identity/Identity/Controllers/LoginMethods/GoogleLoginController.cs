@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using System;
+using Microsoft.AspNetCore.Http;
 
 namespace Identity.Controllers.LoginMethods
 {
@@ -58,12 +59,15 @@ namespace Identity.Controllers.LoginMethods
                 }
             }
 
+            
             if (user == null)
                 return BadRequest("Invalid External Authentication.");
 
             //check for the Locked out account
 
             var token = await _jwtHandler.GenerateToken(user);
+            Response.Cookies.Append("Dusk", token, new CookieOptions() 
+            { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true });
             Console.WriteLine(token);
             return Ok(new AuthResponseDto { Token = token, IsAuthSuccessful = true });
         }

@@ -43,7 +43,7 @@ export class LoginService {
   
   public externalLogin = (body: ExternalAuthDto) => {
     const url = `${this.googleLoginUrl}ExternalLogin`
-    return this.http.post<AuthResponseDto>(url, body);
+    return this.http.post<AuthResponseDto>(url, body, this.headerOptions.generalHttpOptions);
   }
 
   

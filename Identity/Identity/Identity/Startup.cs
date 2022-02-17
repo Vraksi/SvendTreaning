@@ -78,7 +78,11 @@ namespace Identity
              .AddDefaultTokenProviders();
 
 
-
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = "doom";
+                options.Cookie.SameSite = SameSiteMode.None;
+            });
 
             var jwtSettings = Configuration.GetSection("JwtSettings");
             services.AddAuthentication(opt =>
@@ -88,17 +92,28 @@ namespace Identity
                 opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        context.Token = context.Request.Cookies["Dusk"];
+                        return Task.CompletedTask;
+                    }
+                };
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
+                    
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
+                    
 
                     ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
                     ValidAudience = jwtSettings.GetSection("validAudience").Value,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("securityKey").Value))
                 };
+                
             });
             services.AddScoped<JwtHandler>();
 
@@ -120,11 +135,7 @@ namespace Identity
             // samesite is for using setting cookie policy,
             // none means thirdparty cookies are accepted.
             // lax means just first party cookies
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.Cookie.Name = "doom";
-                options.Cookie.SameSite = SameSiteMode.None;
-            });
+            
             services.AddControllers();
         }
 

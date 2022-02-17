@@ -27,7 +27,7 @@ namespace Identity.Controllers
         // GET: api/Orders
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
-        {
+        {            
             return await _context.Orders
                 .Include(s => s.Status)
                 .Include(s => s.OrderLines)
