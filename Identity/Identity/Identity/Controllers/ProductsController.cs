@@ -31,6 +31,7 @@ namespace Identity.Controllers
         }
 
         // GET: api/Products/5
+        [Authorize(Roles = "Administrator, Viewer")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {

@@ -27,7 +27,14 @@ namespace Identity.Controllers.LoginMethods
             _jwtHandler = jwtHandler;
         }
 
-        //TODO: Constructor og parameters
+        /*          GOOGLE LOGIN
+        ***************************************
+            Opsummering
+
+        ***************************************
+         */
+
+        //this function logs the user in on our server end with google login and returns a cookie in httponly format for CRSF security
         #region Google Login        
         [HttpPost("ExternalLogin")]
         public async Task<IActionResult> ExternalLogin([FromBody] ExternalAuthDto externalAuth)
@@ -38,6 +45,7 @@ namespace Identity.Controllers.LoginMethods
 
             var info = new UserLoginInfo(externalAuth.Provider, payload.Subject, externalAuth.Provider);
 
+            //Logs the user in on our identity server,
             var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
             if (user == null)
             {
@@ -50,7 +58,6 @@ namespace Identity.Controllers.LoginMethods
 
                     //prepare and send an email for the email confirmation
 
-                    await _userManager.AddToRoleAsync(user, "Viewer");
                     await _userManager.AddLoginAsync(user, info);
                 }
                 else
@@ -59,7 +66,6 @@ namespace Identity.Controllers.LoginMethods
                 }
             }
 
-            
             if (user == null)
                 return BadRequest("Invalid External Authentication.");
 
@@ -68,7 +74,6 @@ namespace Identity.Controllers.LoginMethods
             var token = await _jwtHandler.GenerateToken(user);
             Response.Cookies.Append("Dusk", token, new CookieOptions() 
             { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true });
-            Console.WriteLine(token);
             return Ok(new AuthResponseDto { Token = token, IsAuthSuccessful = true });
         }
 

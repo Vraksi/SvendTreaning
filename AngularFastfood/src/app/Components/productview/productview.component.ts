@@ -10,6 +10,7 @@ import { ProductService } from 'src/app/Services/product.service';
 })
 export class ProductviewComponent implements OnInit {
   _products: Product[]
+  _product: Product;
 
   constructor(
     private ProductService: ProductService
@@ -17,6 +18,7 @@ export class ProductviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetProducts();
+    this.GetProduct(1)
   }
 
   GetProducts(){
@@ -24,4 +26,8 @@ export class ProductviewComponent implements OnInit {
       .subscribe(products => this._products = products)
   }
 
+  GetProduct(id: number){
+    this.ProductService.GetProduct(id)
+      .subscribe(product => this._product = product)
+  }
 }

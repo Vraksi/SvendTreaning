@@ -14,12 +14,20 @@ namespace Identity.Services
 {
     public class JwtHandler
 	{
-		//TODO: det her er ikke mit arbejde men skal kunne forstå det bliver nok på mandag eller fredag
+		//TODO: det her er ikke mit arbejde
 
+		/*				JWT HANDLER
+		***************************************
+		 * henter information fra appsettings under forskellige dele af det,
+		 * Det kan ses hvor og hvad der hentes i constructoren
+		 * 
+		***************************************
+		*/
 		private readonly IConfiguration _configuration;
 		private readonly IConfigurationSection _jwtSettings;
 		private readonly IConfigurationSection _googleSettings;
 		private readonly UserManager<IdentityUser> _userManager;
+		
 		public JwtHandler(IConfiguration configuration, UserManager<IdentityUser> userManager)
 		{
 			_userManager = userManager;
@@ -28,6 +36,18 @@ namespace Identity.Services
 			_googleSettings = _configuration.GetSection("GoogleAuthSettings");
 		}
 
+		//generere en token til frontend til login
+		public async Task<string> GenerateToken(IdentityUser user)
+		{
+			var signingCredentials = GetSigningCredentials();
+			var claims = await GetClaims(user);
+			var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
+			var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+
+			return token;
+		}
+
+		// henter nøglen til kryptering og sætter hvad for en kryptering der bruges
 		private SigningCredentials GetSigningCredentials()
 		{
 			var key = Encoding.UTF8.GetBytes(_jwtSettings.GetSection("securityKey").Value);
@@ -36,6 +56,7 @@ namespace Identity.Services
 			return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
 		}
 
+		// henter claims/roller til den token,
 		private async Task<List<Claim>> GetClaims(IdentityUser user)
 		{
 			var claims = new List<Claim>
@@ -43,6 +64,7 @@ namespace Identity.Services
 				new Claim(ClaimTypes.Name, user.Email)
 			};
 
+			// mulighed for flere roller
 			var roles = await _userManager.GetRolesAsync(user);
 			foreach (var role in roles)
 			{
@@ -52,6 +74,7 @@ namespace Identity.Services
 			return claims;
 		}
 
+		// sætter options for JWT
 		private JwtSecurityToken GenerateTokenOptions(SigningCredentials signingCredentials, List<Claim> claims)
 		{
 			var tokenOptions = new JwtSecurityToken(
@@ -64,16 +87,9 @@ namespace Identity.Services
 			return tokenOptions;
 		}
 
-		public async Task<string> GenerateToken(IdentityUser user)
-		{
-			var signingCredentials = GetSigningCredentials();
-			var claims = await GetClaims(user);
-			var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
-			var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
-			return token;
-		}
-
+		// verifier den login information fra frontend for i vores backend, hvor vi tager nogle settings fra Appsettings,
+		// Vi henter ind audience for at vide om vi den information kommer fra det rigtige sted
 		public async Task<GoogleJsonWebSignature.Payload> VerifyGoogleToken(ExternalAuthDto externalAuth)
 		{
 			try
@@ -92,5 +108,7 @@ namespace Identity.Services
 				return null;
 			}
 		}
+
+		
 	}
 }

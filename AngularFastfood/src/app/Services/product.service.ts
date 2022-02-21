@@ -28,4 +28,12 @@ export class ProductService {
        tap(res => console.log('HTTP res: ', res))
      )
   }
+
+  GetProduct(id: number): Observable<Product>{
+    const url = `${this.productURL}/${id}`;
+    return this.http.get<Product>(url, this.httpOptionsJson)
+      .pipe(
+        tap(res => console.log('HTTP res: ', res))
+      )
+  }
 }

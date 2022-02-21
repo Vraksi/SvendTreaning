@@ -14,7 +14,7 @@ import { ProductviewComponent } from './Components/productview/productview.compo
 import { FrontpageComponent } from './Components/frontpage/frontpage.component';
 import { SocialLoginModule, SocialAuthServiceConfig } from 'angularx-social-login';
 import { GoogleLoginProvider } from 'angularx-social-login';
-import { CustomHttpInterceptor } from './Services/CustomHttpInterceptor';
+import { CustomHttpInterceptor } from './Services/Shared/CustomHttpInterceptor';
 
 @NgModule({
   declarations: [

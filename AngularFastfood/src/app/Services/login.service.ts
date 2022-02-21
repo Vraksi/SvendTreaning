@@ -3,7 +3,9 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, observable, of } from "rxjs";
 import { catchError, map, tap } from 'rxjs/operators';
 import { Login, ClassLogin } from '../Models/Login'
-import { Header } from './SharedHeader';
+import { Header } from '../Services/Shared/SharedHeader';
+import { AuthResponseDto } from '../Models/DTO/AuthResponseDto';
+import { ExternalAuthDto } from 'src/app/Models/DTO/ExternalAuthDto';
 
 @Injectable({
   providedIn: 'root'
@@ -19,10 +21,13 @@ export class LoginService {
     private headerOptions: Header
   ) { }
 
+  //TODO: Flyt interfaces ind i deres egen mappe under services.
+
   httpOptions = {
     // withCredentials is needed to send the cookie, because it is be default set to false.
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }), withCredentials: true
   }
+
 
   ToLogOut(){
     const url = `${this.IdentityLoginUrl}LogOut`;
@@ -33,6 +38,7 @@ export class LoginService {
       }))
   }
 
+  
   CheckIfLoggedOut(): Observable<boolean>{
     const url = `${this.IdentityLoginUrl}CheckLogin`; 
     return this.http.get<boolean>(url, this.headerOptions.generalHttpOptions)
@@ -46,7 +52,7 @@ export class LoginService {
     return this.http.post<AuthResponseDto>(url, body, this.headerOptions.generalHttpOptions);
   }
 
-  
+
   // Det er en post request for ikke at sende password i url'en
   ToLogin(email: string, password: string): Observable<Login> {
     let login = new ClassLogin();
@@ -74,16 +80,4 @@ export interface isLoggedIn{
   isLoggedIn: boolean;
 }
 
-export interface ExternalAuthDto {
-  provider: string;
-  idToken: string;
-}
 
-
-export interface AuthResponseDto {
-  isAuthSuccessful: boolean;
-  errorMessage: string;
-  token: string;
-  is2StepVerificationRequired: boolean;
-  provider: string;
-}

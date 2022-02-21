@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ClassLogin, Login } from 'src/app/Models/Login';
 import { LoginService } from 'src/app/Services/login.service';
-import { CookieHelperService } from 'src/app/Services/cookie-helper.service';
-import { CookieService } from 'ngx-cookie-service';
 import { SocialAuthService, GoogleLoginProvider, SocialUser } from 'angularx-social-login';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ExternalAuthDto } from 'src/app/Models/DTO/ExternalAuthDto';
 
 
 @Component({
@@ -55,13 +54,13 @@ export class NavbarComponent implements OnInit {
   }
   */
 
+
   public ExternalLogin = () => {  
   this.SigninWithGoogle()
   .then(res => {
     const user: SocialUser = { ...res };
     this.socialUser = user;
     this._isLoggedIn = (user != null);
-    console.log(user);
     const externalAuthDto: ExternalAuthDto = {
       provider: user.provider,
       idToken: user.idToken
@@ -118,7 +117,4 @@ export class NavbarComponent implements OnInit {
   //#endregion
 }
 
-export interface ExternalAuthDto {
-  provider: string;
-  idToken: string;
-}
+
