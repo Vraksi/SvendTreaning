@@ -11,6 +11,7 @@
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+    <i class="bi-alarm" style="font-size: 2rem; color: cornflowerblue;"></i>
 
 
 
@@ -20,9 +21,120 @@
         <li class="nav-item"><a class="nav-link" routerLink="/products">Food</a></li>
         <li class="nav-item"><a class="nav-link" routerLink="">Login</a></li>
         <li class="nav-item"><a class="nav-link" routerLink="">Peta</a></li>
-      </ul>
 
-      <!--ngif cookie is present-->
+      </ul>
+      <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#register">
+        Register
+      </button>
+      <button type="button" class="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#login">
+        Login
+      </button>
+
+
+      <!--Login Modal-->
+      <div class="modal fade" id="login">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title" id="exampleModalLabel">Login</h2>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div>
+              <form (ngSubmit)="ToLogin(_login)" #loginForm="ngForm" class="d-flex">
+
+                <div>
+                  <input class="form-control me-2" type="text" placeholder="Email" required [(ngModel)]="_login.email"
+                    name="email" #loginemail="ngModel">
+                  <div class="text-wrap" [hidden]="loginemail.valid || loginemail.pristine">
+                    Email is required
+                  </div>
+                  <br>
+                  <input class="form-control " type="text" name="password" placeholder="Password" required
+                    [(ngModel)]="_login.password" #loginPassword="ngModel">
+                  <div class="text-wrap" [hidden]="loginPassword.valid || loginPassword.pristine">
+                    Email is required
+                  </div>
+                </div>
+
+              </form>
+              <div class="container mt-5">
+                <div class="row text-center ">
+               
+                  <div class="col text-primary fs-2">
+                    Login in with other provider
+                  </div>
+              
+                </div>
+              </div>
+
+              <div class="row text-center pt-5">
+                <div class="col">
+                  <button class="txt-center btn-black" data-bs-dismiss="modal">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                    class="bi bi-twitch" viewBox="0 0 16 16">
+                    <path
+                      d="M3.857 0 1 2.857v10.286h3.429V16l2.857-2.857H9.57L14.714 8V0H3.857zm9.714 7.429-2.285 2.285H9l-2 2v-2H4.429V1.143h9.142v6.286z" />
+                    <path d="M11.857 3.143h-1.143V6.57h1.143V3.143zm-3.143 0H7.571V6.57h1.143V3.143z" />
+                  </svg>
+                </button>
+                </div>
+                <div class="col">
+                  <button class="txt-center btn-black" data-bs-dismiss="modal" (click)="ExternalLogin()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                      class="bi bi-google" viewBox="0 0 16 16">
+                      <path
+                        d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z" />
+                    </svg>
+                  </button>
+                </div>
+                <div class="col">
+                  <button class="txt-center btn-black" data-bs-dismiss="modal">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                    class="bi bi-facebook" viewBox="0 0 16 16">
+                    <path
+                      d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
+                  </svg>
+                </button>
+                </div>
+
+
+              </div>
+              <div>
+                <svg class="bi width: 1em">s</svg>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Close</button>
+              <button type="submit" [disabled]="!loginForm.valid" data-bs-dismiss="modal"
+                class="btn btn-primary">Login</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Register Modal-->
+      <div class="modal fade" id="register">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title" id="exampleModalLabel">Register</h2>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Working google og identity login
+    Identity login
       <div *ngIf="!_isLoggedIn" class="col-6">
         <form (ngSubmit)="ToLogin(_login)" #loginForm="ngForm" class="d-flex">
 
@@ -30,7 +142,6 @@
 
             <input class="form-control me-2" type="text" placeholder="Email" required [(ngModel)]="_login.email"
               name="email" #loginemail="ngModel">
-            <!-- Er ikke nødvendig for hvad jeg gerne vil, er for demonstrering af funktionalitet-->
             <div class="text-wrap" [hidden]="loginemail.valid || loginemail.pristine">
               Email is required
             </div>
@@ -50,9 +161,8 @@
         <button class="btn border bg-primary" (click)="LogOut()">Logout</button>
       </div>
 
-    </div>
 
-  </div>
+  google login
   <div class="container" style="max-width: 550px">
     <h2 class="text-center mb-5">Angular Login with Google</h2>
     <div *ngIf="_isLoggedIn === false">
@@ -76,5 +186,6 @@
       <button type="button" (click)="LogoutExternal()" class="btn btn-primary">Log Out</button>
     </div>
   </div>
+  -->
 
 </nav>

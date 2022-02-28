@@ -56,6 +56,7 @@ export class NavbarComponent implements OnInit {
 
 
   public ExternalLogin = () => {  
+  console.log("dwdaw")
   this.SigninWithGoogle()
   .then(res => {
     const user: SocialUser = { ...res };
