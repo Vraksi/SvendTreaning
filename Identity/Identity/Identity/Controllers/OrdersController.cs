@@ -12,7 +12,7 @@ using System.Linq.Expressions;
 
 namespace Identity.Controllers
 {
-    
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrdersController : ControllerBase

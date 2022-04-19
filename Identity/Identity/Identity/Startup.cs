@@ -80,7 +80,7 @@ namespace Identity
 
             services.ConfigureApplicationCookie(options =>
             {
-                options.Cookie.Name = "doom";
+                options.Cookie.Name = "ASPNET";
                 options.Cookie.SameSite = SameSiteMode.None;
             });
 

@@ -48,11 +48,7 @@ export class NavbarComponent implements OnInit {
   SigninWithGoogle = () => {
     return this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
   }
-  /* Dette fungere også men ikke sammen med det vi har gang med at logged ind i vores identity database
-  SigninWithGoogle() {
-    this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
-  }
-  */
+  
 
 
   public ExternalLogin = () => {  
